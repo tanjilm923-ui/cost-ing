@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>COST SHEET</title>
+<style>
+:root{
+  --navy:#1e293b; --navy2:#0f172a; --gold:#2563eb; --gold2:#3b82f6;
+  --bg:#f1f5f9; --panel:#fff; --ink:#1e293b; --muted:#64748b;
+  --line:#e2e8f0; --good:#0ca678; --bad:#f03e3e;
+  --shadow:0 2px 8px rgba(15,23,42,.08),0 10px 30px rgba(15,23,42,.06); --radius:16px;
+  --pink:#2563eb; --teal:#0ca678; --blue:#1c7ed6; --orange:#f76707;
+}
+*{box-sizing:border-box} body{margin:0;font-family:"Segoe UI",Inter,system-ui,Arial,sans-serif;background:linear-gradient(135deg,#f8fafc 0%,#f1f5f9 45%,#e2e8f0 100%);background-attachment:fixed;color:var(--ink);font-size:13.5px}
+.app{display:grid;grid-template-columns:262px 1fr;min-height:100vh}
+.side{background:linear-gradient(180deg,#16294a,#0f1f3a 60%,#0a1526);color:#dbe4f0;padding:16px 14px;position:sticky;top:0;height:100vh;overflow:auto}
+.brand{display:flex;gap:10px;align-items:center;padding:4px 6px 14px;border-bottom:1px solid rgba(255,255,255,.15);margin-bottom:10px}
+.brand .logo{min-width:72px;height:56px;padding:4px 8px;border-radius:12px;font-size:15px;line-height:1.15;text-align:center;word-break:break-word;overflow:hidden;background:#8a6508;display:grid;place-items:center;font-weight:800;color:#ffffff;text-shadow:0 1px 3px rgba(0,0,0,.85);box-shadow:0 2px 6px rgba(0,0,0,.35)}
+.brand b{font-size:15px;color:#fff;display:block}.brand span{font-size:11px;color:#94a3b8}
+.side h4{font-size:10.5px;text-transform:uppercase;letter-spacing:.12em;color:#94a3b8;margin:14px 6px 8px}
+.styleItem{display:flex;gap:9px;align-items:center;padding:8px 10px;border-radius:10px;cursor:pointer;font-weight:600;font-size:12.5px;color:#f5f0ff;border:1px solid transparent;margin-bottom:4px;transition:all .15s}
+.styleItem:hover{background:rgba(255,255,255,.08)}
+.styleItem.active{background:rgba(37,99,235,.25);border-color:rgba(96,165,250,.6)}
+.styleItem img,.styleItem .noimg{width:30px;height:30px;border-radius:7px;object-fit:cover;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.2);flex:none}
+.side button{width:100%;text-align:left;background:rgba(255,255,255,.10);color:#f5f0ff;border:1px solid rgba(255,255,255,.14);padding:9px 11px;border-radius:9px;cursor:pointer;font-size:12.5px;margin-top:7px;transition:all .15s}
+.side button:hover{background:rgba(255,255,255,.2);transform:translateX(2px)}
+.styleTools{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin:0 0 10px}
+.side .styleTools button{width:auto;margin:0;padding:6px 4px;display:flex;align-items:center;justify-content:center;gap:4px;font-size:11.5px;font-weight:700;color:#fff;border-radius:8px;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,.25)}
+.side .styleTools button .ic{font-size:13px;line-height:1}
+.side .styleTools button.add{background:#2563eb;border-color:#60a5fa}
+.side .styleTools button.copy{background:#0ca678;border-color:#38d9a9}
+.side .styleTools button.del{background:#e03131;border-color:#ff8787}
+.side .styleTools button:hover{transform:translateY(-1px);filter:brightness(1.15);box-shadow:0 4px 10px rgba(0,0,0,.35)}
+main{padding:20px 24px 60px;max-width:1350px;width:100%}
+.topbar{display:flex;align-items:stretch;gap:16px;margin-bottom:16px}
+.topMain{flex:1;min-width:0;display:flex;flex-direction:column;gap:10px}
+.topMain .kpis{margin-top:auto}
+.titleRow{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{font-size:11px;font-weight:700;padding:3px 10px;border-radius:99px;background:#fff;border:1px solid var(--line);color:#1e293b;box-shadow:0 1px 3px rgba(15,23,42,.06)}
+.chip span{color:var(--muted);font-weight:600;margin-right:4px}
+.toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 10px;box-shadow:var(--shadow)}
+.toolbar .printWrap{margin-left:auto}
+.heroImg{flex:none;width:230px;min-height:210px;padding:4px;background:#fff}
+.topbar h1{margin:0;font-size:20px;color:#1e293b}.topbar .sub{color:var(--muted);font-size:12px;margin-top:3px}
+.btn{border:1px solid var(--line);background:#fff;padding:8px 13px;border-radius:9px;cursor:pointer;font-size:12.5px;font-weight:600;box-shadow:var(--shadow);transition:transform .12s}
+.btn:hover{transform:translateY(-1px)}
+.btn.primary{background:linear-gradient(135deg,#334155,#0f172a);color:#fff;border-color:transparent}
+.btn.gold{background:linear-gradient(135deg,#16294a,#0a1526);color:#fff;border-color:transparent}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px;margin-bottom:16px}
+.card h3{margin:0 0 12px;font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:#334155;display:flex;align-items:center;gap:8px}
+.card h3 .dot{width:8px;height:8px;border-radius:3px;background:linear-gradient(135deg,#2563eb,#0f172a)}
+.hgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.field label{display:block;font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:4px}
+.field input,.field textarea{width:100%;border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:13px;background:#f8fafc;font-family:inherit;transition:border-color .15s,box-shadow .15s}
+.field input:focus{border-color:#3b82f6;box-shadow:0 0 0 3px rgba(59,130,246,.20);outline:none}
+.pvRow{display:grid;gap:8px;max-width:760px}
+.pvRow1{grid-template-columns:repeat(4,minmax(0,1fr));margin-bottom:10px}
+.pvRow2{grid-template-columns:repeat(5,minmax(0,1fr))}
+.pvRow .field input{padding:6px 8px;min-width:0}
+.pvBox{background:#f1f5f9;border:1px solid #e2e8f0;border-radius:10px;padding:5px 8px;font-size:11px;line-height:1.25;color:var(--muted);min-height:50px;min-width:0;display:flex;flex-direction:column;justify-content:space-between}
+.pvVal{font-size:14px;font-weight:700;color:#0f172a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.field.wide{grid-column:span 2}
+#bom td input.ref{border:1px solid var(--line);border-radius:6px}
+#bom td input.ref:hover,#bom td input.ref:focus{border-color:#cbd5e1;background:#f8fafc;outline:none}
+table{width:100%;border-collapse:collapse}
+th{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#475569;text-align:right;padding:6px 8px;border-bottom:2px solid #e2e8f0;background:#f8fafc}
+th:first-child,td:first-child{text-align:left}
+td{padding:5px 8px;border-bottom:1px solid #f1f5f9;font-size:12.5px;text-align:right}
+td input{width:100%;border:1px solid transparent;background:transparent;text-align:right;font:inherit;padding:4px 6px;border-radius:6px}
+td input:hover,td input:focus,td textarea:hover,td textarea:focus{border-color:#cbd5e1;background:#f8fafc;outline:none}
+tr.sec td{background:#f1f5f9;font-weight:700;color:#334155;text-transform:uppercase;font-size:10.5px;letter-spacing:.1em;text-align:left}
+tr.total td{font-weight:700;border-top:2px solid #cbd5e1;background:#f8fafc;color:#1e293b}
+.pill{display:inline-block;padding:2px 9px;border-radius:99px;background:#f1f5f9;color:#334155;font-weight:600;font-size:11px}
+.imgs{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:14px;max-width:560px}
+.slot{border:2px dashed #cbd5e1;border-radius:12px;min-height:130px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:var(--muted);font-size:11px;cursor:pointer;background:#f8fafc;overflow:hidden;position:relative;text-align:center;padding:6px;transition:border-color .15s}
+.slot img{max-width:100%;max-height:130px;border-radius:6px}
+.slot:hover{border-color:var(--pink)}
+.slot .rm{position:absolute;top:4px;right:6px;background:rgba(15,23,42,.85);color:#fff;border:none;border-radius:6px;font-size:10px;padding:2px 6px;cursor:pointer}
+.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+.kpis4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.kpi{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px;box-shadow:var(--shadow);border-top:4px solid #94a3b8}
+.kpi:nth-child(2){border-top-color:#2563eb}
+.kpi:nth-child(3){border-top-color:#0ca678}
+.kpi:nth-child(4){border-top-color:#f76707}
+.kpi:nth-child(5){border-top-color:#64748b}
+.kpi .l{font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.kpi .v{font-size:19px;font-weight:700;margin-top:4px;color:#1e293b}
+.kpi .s{font-size:11px;color:var(--muted);margin-top:2px}
+.kpi.hero{background:linear-gradient(135deg,#334155,#0f172a);color:#fff;border-top-color:#2563eb}
+.kpi.hero .l,.kpi.hero .s{color:#cbd5e1}.kpi.hero .v{color:#fff}
+.badge{font-size:11px;padding:3px 9px;border-radius:7px;background:#f1f5f9;color:#334155;border:1px solid #e2e8f0;cursor:pointer}
+.badge:hover{background:#e2e8f0}
+.pos{color:var(--good)}.neg{color:var(--bad)}
+.tblwrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+#summary{min-width:560px}#bom{min-width:760px}
+@media(max-width:1200px){.app{grid-template-columns:225px 1fr}.hgrid,.kpis{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:1024px){.hgrid{grid-template-columns:repeat(2,1fr)}.kpis{grid-template-columns:repeat(2,1fr)}.card{padding:14px}}
+@media(max-width:900px){.app{grid-template-columns:1fr}.side{position:static;height:auto;padding:12px 14px}.topbar h1{font-size:18px}
+  #styleList{display:flex;gap:6px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:6px}
+  .styleItem{margin-bottom:0;flex:none}
+  .side button{margin-top:6px}
+  .brand{padding-bottom:10px}
+  main{padding:14px 14px 50px}
+  .topbar{flex-direction:column;align-items:stretch}
+  .heroImg{width:100%}
+  .topbar .printWrap{align-self:flex-end}}
+@media(max-width:640px){body{font-size:13px}main{padding:12px 12px 44px}.card{padding:12px;border-radius:12px}
+  .hgrid,.kpis{grid-template-columns:repeat(2,1fr)}.hgrid .field.wide{grid-column:span 2}
+  .kpi .v{font-size:16px}.topbar h1{font-size:16px}.imgs{grid-template-columns:1fr;max-width:100%}
+  th,td{padding:5px 6px;font-size:11.5px}.brand .logo{height:48px;min-width:56px}
+  td input{padding:4px 4px;font-size:11.5px}
+  #bom th:nth-child(5),#bom td:nth-child(5){display:none}
+  #bom{min-width:520px}
+  #summary{min-width:480px}
+  .slot{min-height:110px!important}
+  .topbar .sub{font-size:11px}}
+@media(max-width:430px){.hgrid,.kpis{grid-template-columns:1fr}.hgrid .field.wide{grid-column:span 1}.kpi .v{font-size:18px}
+  .topbar .printWrap{align-self:stretch}.topbar .printWrap .btn{width:100%}.printMenu{left:0;right:0;min-width:0}}
+.printWrap{position:relative;display:inline-block}
+.printMenu{position:absolute;right:0;top:calc(100% + 6px);background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow);min-width:170px;overflow:hidden;display:none;z-index:50}
+.printMenu.open{display:block}
+.printMenu button{display:flex;align-items:center;gap:8px;width:100%;text-align:left;padding:10px 14px;border:none;background:#fff;cursor:pointer;font-size:12.5px;font-weight:600;color:var(--ink)}
+.printMenu button:hover{background:#f5f0ff}
+@media print{.side,.topbar .printWrap,#btnAddStyle,#btnCopyStyle,#btnDelStyle,#btnImport,#btnExport,#btnExportStyle{display:none!important}main{padding:0}}
+</style>
+<script src="html2pdf.bundle.min.js"></script>
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <div class="brand"><div class="logo" id="brandLogo">Buyer</div><div><b id="brandTitle">COST SHEET</b><span id="brandSub" style="font-size:13px;font-weight:700;color:#94a3b8;letter-spacing:.04em"></span></div></div>
+    <h4>Styles</h4>
+    <div class="styleTools">
+      <button id="btnAddStyle" class="add" title="Add new style"><span class="ic">＋</span>New</button>
+      <button id="btnCopyStyle" class="copy" title="Copy current style"><span class="ic">⧉</span>Copy</button>
+      <button id="btnDelStyle" class="del" title="Remove current style"><span class="ic">🗑</span>Delete</button>
+    </div>
+    <div id="styleList"></div>
+    <h4>Data</h4>
+    <button id="btnImport">⬆ Import XLSX (reload data)</button>
+    <button id="btnExportStyle">⬇ Export this style (Excel)</button>
+    <button id="btnExport">⬇ Export all styles (Excel)</button>
+    <input type="file" id="xlsxFile" accept=".xlsx,.xls,.xlsb,.csv" style="display:none">
+    <a href="https://www.linkedin.com/in/tanjel-mahamud/" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:8px;background:rgba(37,99,235,.25);border:1px solid rgba(96,165,250,.5);color:#dbeafe;text-decoration:none;padding:4px 8px;font-size:12px;border-radius:10px;font-size:12.5px;font-weight:700;margin-top:14px;justify-content:center">🔗 Connect to fix the problems</a>
+  </aside>
+  <main>
+    <div class="topbar">
+      <div class="topMain">
+        <div class="titleRow"><h1 id="title">—</h1><div class="chips" id="titleChips"></div></div>
+        <div class="sub" id="subtitle">—</div>
+        <div class="toolbar">
+          <button class="btn gold" onclick="document.getElementById('tpdf').click()">📄 Import TP</button>
+          <label style="display:flex;align-items:center;gap:4px;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap" title="When checked, existing BOM items are removed and only the tech pack items are loaded"><input type="checkbox" id="tpReplace" onchange="localStorage.setItem('tpReplace', this.checked ? '1' : '')"> Replace existing BOM</label>
+          <p style="font-size:12px;color:var(--muted);margin:0">Exclude the BOM items that are irrelevant.</p>
+          <input type="file" id="tpdf" accept=".pdf" style="display:none" onchange="importTechPack(this.files[0]);this.value=''">
+          <div class="printWrap">
+          <button class="btn gold" id="btnPrintMenu" onclick="togglePrintMenu(event)">🖨 Print ▾</button>
+          <div class="printMenu" id="printMenu">
+            <button onclick="doPrint()">🖨 Print</button>
+            <button onclick="savePdf()">💾 Save (Download PDF)</button>
+            <button onclick="exportCurrentStyle()">📊 Export Excel (this style)</button>
+          </div>
+          </div>
+        </div>
+        <div class="kpis" id="kpis"></div>
+      </div>
+      <div class="slot heroImg" id="slotLarge" onclick="pickImage('large')">
+        <span style="font-size:10px">📷 Click or paste (Ctrl+V)</span>
+        <input type="file" id="imgLarge" accept="image/*" style="display:none" onchange="setImage('large',this.files[0])">
+      </div>
+    </div>
+
+    <div class="card">
+      <h3><span class="dot"></span>Style Description</h3>
+      <div class="hgrid">
+        <div class="field"><label>Style No</label><input data-h="styleNo"></div>
+        <div class="field"><label>Season</label><input data-h="season" list="seasonList" placeholder="Select or type"><datalist id="seasonList"><option value="SPRING"></option><option value="SUMMER"></option><option value="FALL"></option><option value="WINTER"></option></datalist></div>
+        <div class="field"><label>Year</label><input data-h="year" list="yearList" placeholder="Select or type"><datalist id="yearList"><option value="2027"></option><option value="2028"></option><option value="2029"></option><option value="2030"></option></datalist></div>
+        <div class="field"><label>Customer</label><input data-h="customer" list="customerList" placeholder="Select or type"><datalist id="customerList"><option value="PVH-CK"></option><option value="MGF"></option><option value="QUINCE"></option><option value="BONITA"></option><option value="BENETTON"></option><option value="SAINSBURY'S"></option><option value="NEXT"></option><option value="M&amp;S"></option><option value="H&amp;M"></option><option value="C&amp;A"></option><option value="CHIBO"></option></datalist></div>
+        <div class="field"><label>Fab Mill</label><input data-h="fabMill"></div>
+        <div class="field"><label>Fab Width</label><input data-h="fabWidth"></div>
+        <div class="field"><label>Order No</label><input data-h="orderNo"></div>
+        <div class="field"><label>Wash Type</label><input data-h="addProcess" list="addProcessList" placeholder="Select or type"><datalist id="addProcessList"><option value="NON-WASH"></option><option value="ENZYME WASH"></option><option value="BLEACH WASH"></option><option value="ACID WASH"></option><option value="STONE WASH"></option><option value="SOFTENER WASH"></option><option value="GARMENT DYE"></option><option value="OVER DYE"></option></datalist></div>
+        <div class="field"><label>Embellishments</label><input data-h="embellishment" list="embellishmentList" placeholder="Select or type"><datalist id="embellishmentList"><option value="NO EMBELLISHMENT"></option><option value="EMBROIDERY"></option><option value="SCREEN PRINT"></option><option value="DIGITAL PRINT"></option><option value="HEAT TRANSFER"></option><option value="APPLIQUE"></option><option value="BEADING"></option><option value="SEQUIN"></option></datalist></div>
+        <div class="field"><label>Fabric Description</label><input data-h="fabricDesc"></div>
+        <div class="field"><label>Fabric Ref</label><input data-h="fabricRef"></div>
+        <div class="field"><label>MOQ/Projected Qty</label><input type="number" data-h="qty"></div>
+        <div class="field"><label>Target $/pc</label><input type="number" step="0.01" data-h="targetFob"></div>
+        <div class="field"><label>Amend No</label><input data-h="amendNo"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3><span class="dot"></span>Cost Summary</h3>
+      <div class="tblwrap"><table id="summary"><tbody></tbody></table></div>
+    </div>
+
+
+
+    <div class="card">
+      <h3><span class="dot"></span>BOM — Materials &amp; Trims <span class="badge" id="itemCount"></span></h3>
+      <div class="tblwrap"><table id="bom">
+        <thead><tr><th>Item</th><th>Ref</th><th>Unit</th><th>Unit Px</th><th>Rating</th><th>Waste %</th><th>Value</th><th>Budget</th><th></th></tr></thead>
+        <tbody></tbody>
+      </table></div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:8px">
+    <div class="card" style="flex:1;min-width:340px;margin-bottom:0">
+      <h3><span class="dot"></span>Finance Costs</h3>
+      <div class="tblwrap"><table id="otherPct" style="max-width:760px"><tbody></tbody></table></div>
+    </div>
+
+    <div class="card" id="prodVars2" style="flex:1;min-width:340px;margin-bottom:0">
+      <h3><span class="dot"></span>Production Variables — Over All View &nbsp;</h3>
+      <div class="pvRow pvRow1">
+        <div class="field"><label>SMV (min)</label><input type="number" step="0.01" data-h="smv"></div>
+        <div class="field"><label>EPM</label><input type="number" step="0.01" data-h="epm"></div>
+        <div class="field"><label>Efficiency %</label><input type="number" step="1" data-h="efficiency"></div>
+        <div class="field"><label>CPM ($)</label><div style="display:flex;align-items:center;gap:4px"><span style="color:var(--muted);font-weight:600">$</span><input type="number" step="0.001" data-h="lineCostRate"></div></div>
+      </div>
+      <div class="pvRow pvRow2">
+        <div class="pvBox">CM<div class="pvVal" id="bottomCM"></div></div>
+        <div class="pvBox">Line Cost<div class="pvVal" id="bottomLineCost"></div></div>
+        <div class="pvBox">Profit %<div class="pvVal" id="bottomProfit" style="color:inherit"></div></div>
+        <div class="pvBox">FOB (without Comm.)<div class="pvVal" id="bottomFobwo"></div></div>
+        <div class="pvBox">FOB (with Comm.)<div class="pvVal" id="bottomFob"></div></div>
+      </div>
+    </div>
+    </div>
+
+  </main>
+</div>
+
+<script src="xlsx.full.min.js"></script>
+<script src="pdf.min.js"></script>
+<script src="costing_data.js"></script>
+<script>
+let STYLES = (window.COSTING_DATA || []).slice(0,2).map(s => ({season:'', customer:'', ...s, images: {front:null, back:null, large:null}}))
+  .map(s => ({...s, items: s.items.filter(it => !/ebmlishments/i.test(it.name || ''))}));
+let cur = 0;
+let _stateReady = false;
+
+const $ = s => document.querySelector(s);
+const fmt = (n, d=2) => (+n||0).toLocaleString('en-US',{minimumFractionDigits:d, maximumFractionDigits:d});
+const pct = n => fmt((+n||0)*100, 2) + '%';
+
+const PACKING = ['hang tag','hangtag','swift tag','swift tack','main ht','additional ht','sticker','stickerrfid','tag','hanger','sizer','extra button bag','carton','poly','micro sheet','pvh tapes','packing','barrel','ckj label','gum tape','gum tapes'];
+
+function togglePrintMenu(e){ e.stopPropagation(); document.getElementById('printMenu').classList.toggle('open'); }
+document.addEventListener('click', () => document.getElementById('printMenu').classList.remove('open'));
+function doPrint(){ document.getElementById('printMenu').classList.remove('open'); window.print(); }
+function savePdf(){
+  document.getElementById('printMenu').classList.remove('open');
+  const title = (document.getElementById('title').textContent || 'cost-sheet').replace(/[\\/:*?"<>|]+/g,'-').trim() || 'cost-sheet';
+  const el = document.querySelector('main');
+  if (window.html2pdf){
+    html2pdf().set({
+      margin: 8,
+      filename: title + '.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2, useCORS: true },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' }
+    }).from(el).save();
+  } else {
+    alert('PDF library failed to load. Please refresh the page and try again.');
+  }
+}
+
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'pdf.worker.min.js';
+document.getElementById('tpReplace').checked = localStorage.getItem('tpReplace') === '1';
+
+async function importTechPack(file){
+  if(!file) return;
+  try{
+    const buf = await file.arrayBuffer();
+    const pdf = await pdfjsLib.getDocument({data:new Uint8Array(buf)}).promise;
+    const parsed=[];
+    let isPvH=false, isBonita=false;
+    for(let i=1;i<=pdf.numPages;i++){
+      const t=(await (await pdf.getPage(i)).getTextContent()).items.map(t=>t.str).join(' ');
+      if(/\bNominated\b/.test(t) && /\bCommon\b/.test(t) && /\b[A-Z]{2}-[A-Z]{3}-\d{4,6}\b/.test(t)){ isBonita=true; break; }
+    }
+    if(!isBonita) for(let i=1;i<=Math.min(8,pdf.numPages);i++){
+      const tc=await (await pdf.getPage(i)).getTextContent();
+      if(/Style BOM|Material Sub Type|Placement Name/i.test(tc.items.map(t=>t.str).join(' '))){ isPvH=true; break; }
+    }
+    if(isBonita){ await parseTechPackBonita(pdf, parsed); }
+    else if(isPvH){ await parseTechPackPvH(pdf, parsed); }
+    else {
+    let tokens=[];
+    for(let i=1;i<=pdf.numPages;i++){const tc=await (await pdf.getPage(i)).getTextContent();tokens=tokens.concat(tc.items.map(t=>(t.str||'').trim()).filter(Boolean));}
+    const rows=[];let cur=[];
+    tokens.forEach(t=>{if(/^\d+\.\d{4}$/.test(t)){cur.push(t);rows.push(cur);cur=[];}else cur.push(t);});
+    rows.forEach(r=>{
+      let toks = r.slice(0,-1);
+      // strip everything up to and including the last colour-code group "( ... )"
+      let close = -1;
+      for (let i = toks.length - 1; i >= 0; i--) { if (toks[i].includes(')')) { close = i; break; } }
+      if (close >= 0) toks = toks.slice(close + 1);
+      if(!toks.length) return;
+      let mi=toks.findIndex((t,i)=>i<10 && !/\s/.test(t) && t.length<=24 && /[-\/]/.test(t) && /[A-Za-z]/.test(t) && /[0-9]/.test(t));
+      if(mi<0) mi=toks.findIndex((t,i)=>i<10 && !/\s/.test(t) && t.length<=24 && /[-\/]/.test(t));
+      if(mi<0) mi=toks.findIndex((t,i)=>i<10 && !/\s/.test(t) && t.length<=16 && /\d/.test(t) && /[A-Za-z]/.test(t));
+      let name = mi>0?toks.slice(0,mi).join(' '):'';
+      let ref = mi>=0?toks[mi]:'';
+      if(!name && ref) name=ref;
+      if(mi<0 && toks.length>=2 && toks[0].toUpperCase()===toks[1].toUpperCase()){ name=toks[0]; ref=toks[1]; }
+      name = name.replace(/-\s+/g,'-').replace(/\s+\([^)]*\)/g,'').trim();
+      const ri = name.lastIndexOf(')');
+      if(ri>0) name = name.slice(ri+1).trim();
+      if(name && !/^(copyright|printed|page|giii)/i.test(name) && !/pattern\s*(file)?/i.test(name)) parsed.push({name, ref, qty:parseFloat(r[r.length-1])});
+    });
+    }
+    // Look for wash/embroidery/print mentions anywhere in the tech pack and add them as embellishment items
+    let tpText='';
+    for(let i=1;i<=pdf.numPages;i++){const tc=await (await pdf.getPage(i)).getTextContent();tpText+=' '+tc.items.map(t=>t.str).join(' ');}
+    tpText = tpText.replace(/\bwash\s*care\w*/gi,' '); // care labels are trims, not a wash process
+    const tpWords = tpText.split(/\s+/).filter(Boolean);
+    function techDetail(patterns){
+      for(const pat of patterns){
+        const i = tpWords.findIndex(w => new RegExp(pat,'i').test(w));
+        if(i>=0){
+          return tpWords.slice(Math.max(0,i-8), Math.min(tpWords.length, i+6)).join(' ');
+        }
+      }
+      return '';
+    }
+    if(/\bwash\b/i.test(tpText)){
+      const det = techDetail(['enzyme','softener','reactive','bleach','sandblast','wash']);
+      parsed.push({name: det ? 'Wash - '+det.slice(0,70) : 'Wash', ref:'', section:'Embellishments', qty:NaN});
+    }
+    if(/\bembroider|embroidered|embroidery\b/i.test(tpText)){
+      const det = techDetail(['embroider','embroidery']);
+      parsed.push({name: det ? det.slice(0,70) : 'Embroidery', ref:'', section:'Embellishments', qty:NaN});
+    }
+    if(/\bprint(ing)?\b/i.test(tpText)){
+      const det = techDetail(['print','printing','screen']);
+      parsed.push({name: det ? det.slice(0,70) : 'Print', ref:'', section:'Embellishments', qty:NaN});
+    }
+    seatTechPack(parsed);
+  }catch(e){ alert('Could not read PDF: '+e.message); }
+}
+
+// Bonita / Centric "Style BOM → Placements" layout:
+// section headers like "Fabrics (2)", "Trims (4)", "Stitching (2)", "Labeling (4)", "Wash Care (1)"
+// items start with a material code like "FB-WOV-18582 - Seersucker, ..." in the left column
+async function parseTechPackBonita(pdf, parsed){
+  const CODE = /^([A-Z]{2}-[A-Z]{3}-\d{4,6})\s*-?\s*(.*)$/;
+  const col = (row, a, b) => row.filter(r => r.x >= a && r.x < b).map(r => r.s);
+  const items = [];
+  let sec = '', cur = null;
+  const flush = () => { if (cur) items.push(cur); cur = null; };
+  for (let p = 1; p <= pdf.numPages; p++) {
+    const tc = await (await pdf.getPage(p)).getTextContent();
+    const runs = tc.items.map(it => ({x: it.transform[4], y: it.transform[5], s: (it.str || '').trim()})).filter(r => r.s);
+    const head = runs.find(r => r.s === 'Nominated');
+    if (!head || !runs.some(r => r.s === 'Placements')) { flush(); continue; }
+    const lines = [];
+    runs.forEach(r => { let L = lines.find(l => Math.abs(l.y - r.y) < 2); if (!L) { L = {y: r.y, runs: []}; lines.push(L); } L.runs.push(r); });
+    lines.sort((a, b) => b.y - a.y);
+    for (const l of lines) {
+      if (l.y > head.y - 50 || l.y < 20) continue;            // table header / page footer
+      const row = l.runs.sort((a, b) => a.x - b.x);
+      if (row.some(r => /^Displaying\b/.test(r.s))) { flush(); continue; }
+      const first = row[0];
+      if (first.x < 22 && /^[A-Za-z][A-Za-z &\/]*\(\s*\d+\s*\)$/.test(first.s)) {   // section header
+        flush(); sec = first.s.replace(/\s*\(\s*\d+\s*\)$/, '').trim(); continue;
+      }
+      const desc = col(row, 20, 128);
+      const m = desc.length ? desc[0].match(CODE) : null;
+      if (m) {
+        flush();
+        cur = {sec, code: m[1], desc: [m[2], ...desc.slice(1)], placement: [], pos: [], qty: ''};
+      } else if (cur) cur.desc.push(...desc);
+      else continue;
+      cur.placement.push(...col(row, 190, 265));
+      cur.pos.push(...col(row, 370, 428));
+      const q = col(row, 495, 532)[0];
+      if (q !== undefined && cur.qty === '') cur.qty = q;
+    }
+  }
+  flush();
+  const clean = a => a.join(' ').replace(/\s+/g, ' ').replace(/-\s+(?=\d)/g, '-').trim();
+  const counts = {};
+  items.forEach(it => counts[it.code] = (counts[it.code] || 0) + 1);
+  items.forEach(it => {
+    let name = clean(it.desc).replace(/^-\s*/, '');
+    const placement = clean(it.placement), pos = clean(it.pos).replace(/[\/;,\s]+$/, '');
+    if (/wash\s*care/i.test(it.sec) && !/care/i.test(name)) name = `Wash Care Label - ${name}`;
+    if (placement) name = `${placement} - ${name}`;
+    if (counts[it.code] > 1 && pos) name += ` (${pos})`;       // same material used in several places
+    if (!name || /pattern\s*(file)?/i.test(name)) return;
+    const section = /fabric/i.test(it.sec) ? 'Fabric'
+      : /emb|wash(?!\s*care)|print/i.test(it.sec) ? 'Embellishments' : 'Trims';
+    const qty = parseFloat(String(it.qty).replace(',', '.'));
+    parsed.push({name, ref: it.code, section, qty: NaN, rating: qty > 0 ? qty : 0, distinct: true});
+  });
+}
+
+async function parseTechPackPvH(pdf, parsed){
+  let curSection='';
+  const seen={};
+  let cur=null;
+  const maxP=pdf.numPages;
+  for(let p=1;p<=maxP;p++){
+    const tc=await (await pdf.getPage(p)).getTextContent();
+    const ptxt=tc.items.map(t=>t.str).join(' ');
+    if(!/Style BOM|Placement Name|Description/i.test(ptxt)) continue;
+    const runs=tc.items.map(it=>({x:it.transform[4],y:it.transform[5],s:(it.str||'').trim()})).filter(r=>r.s);
+    const lines=[];
+    runs.forEach(r=>{let L=lines.find(l=>Math.abs(l.y-r.y)<2);if(!L){L={y:r.y,runs:[]};lines.push(L);}L.runs.push(r);});
+    lines.sort((a,b)=>b.y-a.y);
+    for(const l of lines){
+      const row=l.runs.sort((a,b)=>a.x-b.x);
+      // section header (e.g. "Fabric (2)" or "TRIMS") — small token at far left, no code present
+      const lowX=row.filter(r=>r.x>=15 && r.x<50);
+      const xQty=row.find(r=>r.x>=88 && r.x<=115);
+      const lowTxt=lowX.map(r=>r.s).join(' ').trim();
+      if(lowTxt && !xQty && /^([A-Za-z&\/ ]{2,20})(\s*\(\s*\d+\s*\))?$/.test(lowTxt) && /^(fabric|trims?|packings?|packing|notions?|accessories|miscellaneous|others?)$/i.test(lowTxt.replace(/\s*\(\d+\)$/,''))){
+        flush(); cur=null; curSection=lowTxt.replace(/\s*\(\d+\)$/,''); continue;
+      }
+      const codeRun=xQty && /^(?=.*\d)[A-Za-z0-9-]+$/.test(xQty.s) ? xQty : null;
+      // repeated table header rows end current item
+      if(row.some(r=>r.s==='Description') && row.some(r=>r.s==='Code') && row.some(r=>/Placement/.test(r.s))){ flush(); cur=null; continue; }
+      if(codeRun){
+        flush();
+        const placement=lowX.length?lowX[0].s:'';
+        cur={sec:curSection, placement, code:codeRun.s, desc:[]};
+        const ds=row.filter(r=>r.x>=130 && r.x<236);
+        if(ds.length) cur.desc.push(...ds.map(d=>d.s));
+        continue;
+      }
+      if(cur){
+        if(lowX.length && lowX[0].s!=='+' && /^[A-Z][A-Z -\/`'']*$/.test(lowX[0].s) && lowX[0].s.length>1){ flush(); cur=null; continue; }
+        const ds=row.filter(r=>r.x>=130 && r.x<236);
+        if(ds.length) cur.desc.push(...ds.map(d=>d.s));
+      }
+    }
+    flush(); cur=null;
+  }
+  function flush(){
+    if(!cur) return;
+    const name=cur.desc.join(' ').replace(/\s+/g,' ').trim();
+    const secStr=cur.sec||'';
+    let sec='';
+    if(/fabric/i.test(secStr)) sec='Fabric';
+    else if(/trim|pack|notion|access/i.test(secStr)) sec='Trims';
+    else if(/emb|wash|embroider|print/i.test(secStr)) sec='Embellishments';
+    if(name && !seen[cur.code]){ seen[cur.code]=1; if(!/pattern\s*(file)?/i.test(name)) parsed.push({name, ref:cur.code, section:sec, qty:NaN}); }
+    cur=null;
+  }
+}
+
+function seatTechPack(parsed){
+  const norm = s => (s||'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
+  const words = s => norm(s).split(' ').filter(w=>w.length>2);
+  let matched=0, added=0;
+  const items = STYLES[cur].items;
+  const replace = !!(document.getElementById('tpReplace') || {}).checked;
+  const removed = replace ? items.splice(0) : [];   // clear current BOM, keep a backup
+  const before = items.slice();
+  parsed.forEach(p=>{
+    const pw = words(p.name); if(!pw.length) return;
+    if(/pattern\s*(file)?/i.test(p.name)) return;
+    let best=null, bestScore=0;
+    (p.distinct ? before : items).forEach(it=>{
+      const iw = words(it.name); if(!iw.length) return;
+      const common = pw.filter(w=>iw.includes(w)).length;
+      const score = common/Math.max(pw.length,iw.length);
+      if(score>bestScore){bestScore=score;best=it;}
+    });
+    if(best && bestScore>=0.6){ if(p.ref) best.ref=p.ref; if(p.rating && !+best.rating) best.rating=p.rating; matched++; }
+    else {
+      const n = p.name.toLowerCase();
+      let section;
+      if (p.section === 'Fabric' || p.section === 'Trims' || p.section === 'Embellishments'){ section = p.section; }
+      else {
+        if(/wash|embroider|embroidery|screen print|enzyme|softener|reactive|print/.test(n)) section = 'Embellishments';
+        else if(/tropical|cotton|linen|wool|rayon|spandex|polyester|crepe|taffeta|twill|denim|jersey|lining|shell|fusing|interlining|fabric/.test(n)) section = 'Fabric';
+        else if(/button|zipper|rivet|tack|trim|tape|label|thread|cord|hangtag|hanger|sizer|patch|shank|bag|poly|carton|swift|mailbox/.test(n)) section = 'Trims';
+        else return; // skip items that are not fabric / trims / embellishments
+      }
+      items.push({name:p.name, ref:p.ref||'', size:'', unit:'', unitPx:0, rating:p.rating||0, waste:0, section});
+      added++;
+    }
+  });
+  if (replace && !added) {          // nothing usable found — don't wipe the BOM
+    items.push(...removed);
+    render();
+    alert('No BOM items were found in this tech pack. Existing BOM items were kept.');
+    return;
+  }
+  render();
+  alert(replace
+    ? `Tech pack imported: ${removed.length} existing item(s) removed, ${added} tech pack item(s) loaded.`
+    : `Tech pack imported: ${matched} BOM item(s) updated, ${added} new item(s) added.`);
+}
+function isPack(it){ return it.section === 'Trims' && PACKING.some(p => (it.name||'').toLowerCase().includes(p)); }
+function sectionOf(it){
+  if (it.section === 'Fabric' || it.section === 'Sewing Trims' || it.section === 'Packing Trims' || it.section === 'Embellishments') return it.section;
+  const n = (it.name||'').toLowerCase();
+  if (it.section === 'Others') {
+    if (n.includes('wash') || n.includes('embroid') || n.includes('print') || n.includes('embr') || n.includes('embell') || n.includes('mblish')) return 'Embellishments';
+    return 'Others';
+  }
+  return isPack(it) ? 'Packing Trims' : 'Sewing Trims';
+}
+
+function calc(s){
+  const mat = {Fabric:0, 'Sewing Trims':0, 'Packing Trims':0, Embellishments:0, Others:0};
+  s.items.forEach(it => { it.value = it.unitPx*it.rating*(1+ (+it.waste||0)); mat[sectionOf(it)] += it.value; });
+  const matTotal = mat.Fabric + mat['Sewing Trims'] + mat['Packing Trims'] + mat.Embellishments + mat.Others;
+  const cm = s.smv * s.epm;
+  const base = matTotal + cm;
+  const fobw = base / (1 - s.transportPct - s.marginPct);
+  const transport = fobw * s.transportPct;
+  const margin = fobw * s.marginPct;
+  const commission = fobw * s.commissionPct;
+  const fob = fobw + commission;
+  const lineCost = s.smv * s.lineCostRate / (s.efficiency/100);
+  const profit = cm - lineCost;
+  return {mat, matTotal, cm, base, fobw, transport, margin, commission, fob, lineCost, profit};
+}
+
+function renderList(){
+  $('#styleList').innerHTML = STYLES.map((s,i)=>`
+    <div class="styleItem ${i===cur?'active':''}" onclick="select(${i})">
+      ${s.images.large || s.images.front ? `<img src="${s.images.large || s.images.front}">` : `<span class="noimg"></span>`}
+      <div>${s.styleNo}${s.amendNo ? ' · A' + s.amendNo : ''}</div>
+    </div>`).join('');
+}
+function select(i){ cur = i; render(); }
+
+$('#btnAddStyle').onclick = () => {
+  const no = prompt('Enter new Style No:', 'NEW-STYLE');
+  if (!no) return;
+  STYLES.push({styleNo:no.trim(), season:'', customer:'', fabMill:'', fabricRef:'', fabricDesc:'', fabWidth:'', orderNo:'', mover:'', qty:3000, smv:0, epm:0.1, transportPct:0.015, marginPct:0.01, commissionPct:0, efficiency:60, lineCostRate:0, targetFob:0, amendNo:'', year:'', addProcess:'',embellishment:'', items:[], images:{front:null,back:null,large:null}});
+  cur = STYLES.length - 1; render();
+};
+$('#btnCopyStyle').onclick = () => {
+  const src = STYLES[cur];
+  const copy = JSON.parse(JSON.stringify(src, (k, v) => k === 'images' ? undefined : v));
+  copy.styleNo = prompt('Style No for the copy:', src.styleNo + '-COPY') || (src.styleNo + '-COPY');
+  copy.images = {front: src.images.front, back: src.images.back, large: src.images.large};
+  STYLES.push(copy);
+  cur = STYLES.length - 1; render();
+};
+$('#btnDelStyle').onclick = () => {
+  if (STYLES.length <= 1) { alert('At least one style is required.'); return; }
+  if (!confirm('Remove style "' + STYLES[cur].styleNo + '"?')) return;
+  STYLES.splice(cur, 1); if (cur >= STYLES.length) cur = STYLES.length - 1; render();
+};
+
+function render(){
+  const s = STYLES[cur], c = calc(s);
+  document.title = 'Cost Sheet';
+  $('#title').textContent = 'Style ' + s.styleNo + (s.amendNo ? ' · Amend ' + s.amendNo : '');
+  const logo = $('#brandLogo');
+  $('#brandLogo').textContent = s.customer && s.customer.trim() ? s.customer : 'Buyer';
+  const ln = logo.textContent.length;
+  logo.style.fontSize = ln>10?'11px':(ln>6?'13px':'15px');
+  $('#brandSub').textContent = [s.season, s.year].map(v => String(v ?? '').trim()).filter(Boolean).join(' ');
+  $('#subtitle').textContent = `Fabric: ${s.fabricDesc||'—'}${s.fabMill?' · Mill: '+s.fabMill:''}${s.fabWidth?' · Width: '+s.fabWidth:''}`;
+  const chips = $('#titleChips'); chips.innerHTML = '';
+  [['Customer', s.customer], ['Season', [s.season, s.year].map(v => String(v ?? '').trim()).filter(Boolean).join(' ')],
+   ['MOQ/Projected Qty', s.qty ? (+s.qty).toLocaleString() + ' pcs' : ''], ['Wash Type', s.addProcess], ['Emb.', s.embellishment]]
+    .forEach(([k, v]) => {
+      v = String(v ?? '').trim(); if (!v) return;
+      const c = document.createElement('div'); c.className = 'chip';
+      const l = document.createElement('span'); l.textContent = k;
+      c.append(l, v); chips.append(c);
+    });
+  renderList();
+
+  document.querySelectorAll('[data-h]').forEach(inp => {
+    const k = inp.dataset.h;
+    let v = (s[k] === undefined || s[k] === null) ? '' : s[k];
+    if (inp.dataset.pct !== undefined) v = (+v*100);
+    inp.value = v;
+  });
+
+  ['large'].forEach(side => {
+    const cap = side === 'front' ? 'Front' : side === 'back' ? 'Back' : 'Large';
+    const slot = $('#slot' + cap);
+    if (!slot) return;
+    const big = side === 'large';
+    if (s.images[side]) { slot.innerHTML = `<img src="${s.images[side]}"${big?' style="max-height:195px;max-width:215px"':''}><button class="rm" onclick="event.stopPropagation();removeImage('${side}')">✕</button><input type="file" id="img${cap}" accept="image/*" style="display:none" onchange="setImage('${side}',this.files[0])">`; }
+    else { slot.innerHTML = `<span>${big?'📷 Click, drag & drop, or paste one image from clipboard (Ctrl+V)':'📷 Click to add '+side+' image'}</span><input type="file" id="img${cap}" accept="image/*" style="display:none" onchange="setImage('${side}',this.files[0])">`; }
+  });
+
+  $('#itemCount').textContent = s.items.length + ' items';
+  const tb = $('#bom tbody'); tb.innerHTML = '';
+  ['Fabric','Sewing Trims','Packing Trims','Embellishments','Others'].forEach(sec => {
+    const items = s.items.filter(it => sectionOf(it) === sec);
+    tb.insertAdjacentHTML('beforeend', `<tr class="sec"><td colspan="2">${sec}${sec==='Fabric'?' (Materials)':''}</td><td colspan="7" style="text-align:right"><button class="badge" onclick="addItem('${sec}')">+ Add ${sec} Item</button></td></tr>`);
+    items.forEach((it, idx) => {
+      const gi = s.items.indexOf(it);
+      tb.insertAdjacentHTML('beforeend', `<tr>
+        <td><textarea rows="1" style="width:100%;min-width:240px;border:1px solid transparent;background:transparent;font:inherit;padding:4px 6px;border-radius:6px;resize:vertical;text-align:left;white-space:normal" onchange="u(${gi},'name',this.value)" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'">${it.name}</textarea></td>
+        <td><input class="ref" value="${it.ref}" onchange="u(${gi},'ref',this.value)"></td>
+        <td><input value="${it.unit}" onchange="u(${gi},'unit',this.value)"></td>
+        <td><input type="number" step="0.01" value="${it.unitPx}" onchange="u(${gi},'unitPx',+this.value)"></td>
+        <td><input type="number" step="0.01" value="${it.rating}" onchange="u(${gi},'rating',+this.value)"></td>
+        <td><input type="number" step="1" min="0" value="${Math.round((+it.waste||0)*100)}" onchange="u(${gi},'waste',Math.round(+this.value||0)/100)"></td>
+        <td>${fmt(it.value,3)}</td>
+        <td>${fmt(it.value*s.qty)}</td>
+        <td><button class="badge" onclick="delItem(${gi})">✕</button></td>
+      </tr>`);
+    });
+    tb.insertAdjacentHTML('beforeend', `<tr class="total"><td colspan="6">Total ${sec}</td><td>${fmt(c.mat[sec],3)}</td><td>${fmt(c.mat[sec]*s.qty)}</td><td></td></tr>`);
+  });
+
+  // separate Other % items table
+  const on2 = s.othersNames || {};
+  $('#otherPct tbody').innerHTML = `
+    <tr><th style="text-align:left">Related costs</th><th>Percentage</th><th>$ / pc</th><th>Budget (${s.qty} pcs)</th></tr>
+    <tr><td><input value="${on2.transport||'Transport'}" onchange="STYLES[cur].othersNames=STYLES[cur].othersNames||{};STYLES[cur].othersNames.transport=this.value;render()" style="text-align:left"></td><td style="text-align:right"><input type="number" step="0.1" value="${+(+s.transportPct*100).toFixed(1)}" onchange="STYLES[cur].transportPct=(+this.value||0)/100;render()" style="text-align:right;width:70%"><small style="color:var(--muted)"> %</small></td><td>${fmt(c.transport,3)}</td><td>${fmt(c.transport*s.qty)}</td></tr>
+    <tr><td><input value="${on2.margin||'Margin Slippage'}" onchange="STYLES[cur].othersNames=STYLES[cur].othersNames||{};STYLES[cur].othersNames.margin=this.value;render()" style="text-align:left"></td><td style="text-align:right"><input type="number" step="0.1" value="${+(+s.marginPct*100).toFixed(1)}" onchange="STYLES[cur].marginPct=(+this.value||0)/100;render()" style="text-align:right;width:70%"><small style="color:var(--muted)"> %</small></td><td>${fmt(c.margin,3)}</td><td>${fmt(c.margin*s.qty)}</td></tr>
+    <tr><td><input value="${on2.commission||'Commission'}" onchange="STYLES[cur].othersNames=STYLES[cur].othersNames||{};STYLES[cur].othersNames.commission=this.value;render()" style="text-align:left"></td><td style="text-align:right"><input type="number" step="0.1" value="${+(+s.commissionPct*100).toFixed(1)}" onchange="STYLES[cur].commissionPct=(+this.value||0)/100;render()" style="text-align:right;width:70%"><small style="color:var(--muted)"> %</small></td><td>${fmt(c.commission,3)}</td><td>${fmt(c.commission*s.qty)}</td></tr>`;
+
+  $('#summary tbody').innerHTML = `
+    <tr><th colspan="2" style="text-align:left">Component</th><th>$ / pc</th><th>Budget (${s.qty} pcs)</th><th>% of FOB</th></tr>
+    <tr><td>Fabric</td><td></td><td>${fmt(c.mat.Fabric,3)}</td><td>${fmt(c.mat.Fabric*s.qty)}</td><td>${pct(c.mat.Fabric/c.fob)}</td></tr>
+    <tr><td>Sewing Trims</td><td></td><td>${fmt(c.mat['Sewing Trims'],3)}</td><td>${fmt(c.mat['Sewing Trims']*s.qty)}</td><td>${pct(c.mat['Sewing Trims']/c.fob)}</td></tr>
+    <tr><td>Packing Trims</td><td></td><td>${fmt(c.mat['Packing Trims'],3)}</td><td>${fmt(c.mat['Packing Trims']*s.qty)}</td><td>${pct(c.mat['Packing Trims']/c.fob)}</td></tr>
+    <tr><td>Embellishments (Wash/Embr/Print)</td><td></td><td>${fmt(c.mat.Embellishments,3)}</td><td>${fmt(c.mat.Embellishments*s.qty)}</td><td>${pct(c.mat.Embellishments/c.fob)}</td></tr>
+    <tr><td>Others (Courier/Freight &amp; TESTS)</td><td></td><td>${fmt(c.mat.Others,3)}</td><td>${fmt(c.mat.Others*s.qty)}</td><td>${pct(c.mat.Others/c.fob)}</td></tr>
+    <tr><td><b>Materials total</b></td><td></td><td><b>${fmt(c.matTotal,3)}</b></td><td><b>${fmt(c.matTotal*s.qty)}</b></td><td>${pct(c.matTotal/c.fob)}</td></tr>
+    <tr><td>CM (SMV ${s.smv} × EPM ${s.epm})</td><td></td><td>${fmt(c.cm,3)}</td><td>${fmt(c.cm*s.qty)}</td><td>${pct(c.cm/c.fob)}</td></tr>
+    <tr><td><b>FOB without Commission</b></td><td></td><td><b>${fmt(c.fobw,3)}</b></td><td><b>${fmt(c.fobw*s.qty)}</b></td><td>${pct(c.fobw/c.fob)}</td></tr>
+    <tr><td>↳ Transport (${pct(s.transportPct)})</td><td></td><td>${fmt(c.transport,3)}</td><td>${fmt(c.transport*s.qty)}</td><td>${pct(c.transport/c.fob)}</td></tr>
+    <tr><td>↳ Margin slippage (${pct(s.marginPct)})</td><td></td><td>${fmt(c.margin,3)}</td><td>${fmt(c.margin*s.qty)}</td><td>${pct(c.margin/c.fob)}</td></tr>
+    <tr><td>Commission (${pct(s.commissionPct)})</td><td></td><td>${fmt(c.commission,3)}</td><td>${fmt(c.commission*s.qty)}</td><td>${pct(c.commission/c.fob)}</td></tr>
+    <tr><td><b>FOB with Commission</b></td><td></td><td><b>${fmt(c.fob,3)}</b></td><td><b>${fmt(c.fob*s.qty)}</b></td><td>${pct(1)}</td></tr>
+    <tr><td>Line Cost (SMV×Rate/Eff)</td><td></td><td>${fmt(c.lineCost,3)}</td><td>${fmt(c.lineCost*s.qty)}</td><td>${pct(c.lineCost/c.fob)}</td></tr>
+    <tr><td><b>Profit Margin</b></td><td></td><td class="${c.profit>=0?'pos':'neg'}"><b>${fmt(c.profit,3)}</b></td><td class="${c.profit>=0?'pos':'neg'}"><b>${fmt(c.profit*s.qty)}</b></td><td>${pct(c.profit/c.fob)}</td></tr>`;
+
+  $('#kpis').innerHTML = `
+    <div class="kpi hero"><div class="l">FOB / pc</div><div class="v">$${fmt(c.fob,2)}</div><div class="s">Total budget $${fmt(c.fob*s.qty)}</div></div>
+    <div class="kpi"><div class="l">SMV / EPM</div><div class="v">${fmt(s.smv,2)} <span style="font-size:12px;color:var(--muted)">min</span> / ${fmt(s.epm,2)}</div><div class="s">SAH ${fmt((s.smv * s.qty) / 60, 1)}</div></div>
+    <div class="kpi"><div class="l">CM / pc</div><div class="v">$${fmt(c.cm,2)}</div><div class="s">Line cost $${fmt(c.lineCost,2)}/pc</div></div>
+    <div class="kpi"><div class="l">Target $/pc</div><div class="v">$${fmt(s.targetFob||0,2)}</div><div class="s" style="font-weight:700;display:inline-block;padding:2px 8px;border-radius:6px;${((s.targetFob||0)-c.fob)<0?'color:#f03e3e;background:#fff5f5':'color:#0ca678;background:#ebfbee'}">${((s.targetFob||0)-c.fob)<0?'−':'+'}$${fmt(Math.abs((s.targetFob||0)-c.fob),2)}</div></div>
+    <div class="kpi"><div class="l">Profit %</div><div class="v ${c.profit>=0?'pos':'neg'}">${fmt(c.profit/c.fob*100,2)}%</div><div class="s">Profit $${fmt(c.profit,2)}/pc</div></div>`;
+  $('#bottomFob').textContent = '$' + fmt(c.fob,2);
+  $('#bottomFobwo').textContent = '$' + fmt(c.fobw,2);
+  const bp = c.profit/c.fob*100;
+  const bpel = $('#bottomProfit'); bpel.textContent = fmt(bp,2) + '%'; bpel.style.color = c.profit>=0 ? '#0ca678' : '#f03e3e';
+  $('#bottomCM').textContent = '$' + fmt(c.cm,3);
+  $('#bottomLineCost').textContent = '$' + fmt((s.smv*100/(s.efficiency||1))*s.lineCostRate,3);
+  if (_stateReady) debouncedSave();
+}
+
+function u(i, k, v){ STYLES[cur].items[i][k] = v; render(); }
+function addItem(section){
+  let baseSection = section, isPacking = false;
+  if (section === 'Sewing Trims' || section === 'Packing Trims') baseSection = 'Trims';
+  if (section === 'Packing Trims') isPacking = true;
+  if (section === 'Embellishments' || section === 'Others') baseSection = 'Others';
+  const it = {name: section === 'Others' ? 'Others' : isPacking ? 'New Packing Trim' : section === 'Embellishments' ? 'Embellishments' : 'New Item', ref:'', unit:'Pcs', unitPx:0, rating:1, waste:0.02, section: baseSection};
+  STYLES[cur].items.push(it); render();
+}
+function delItem(i){ STYLES[cur].items.splice(i,1); render(); }
+
+// header binds
+document.querySelectorAll('[data-h]').forEach(inp => {
+  inp.addEventListener('change', () => {
+    const k = inp.dataset.h; let v = inp.value;
+    if (inp.type === 'number') v = +v;
+    if (inp.dataset.pct !== undefined) v = (+inp.value)/100;
+    STYLES[cur][k] = v; render();
+  });
+});
+
+// Season / Year: show the full option list again even when a value is already selected
+document.querySelectorAll('input[list][data-h]').forEach(inp => {
+  const ph = inp.getAttribute('placeholder') || '';
+  const open = () => {
+    if (!inp.value) return;
+    inp.dataset.prev = inp.value;
+    inp.placeholder = inp.value;      // keep the current value visible as a hint
+    inp.value = '';                   // empty value → browser lists every option
+    if (inp.showPicker) { try { inp.showPicker(); } catch (e) {} }
+  };
+  inp.addEventListener('focus', open);
+  inp.addEventListener('mousedown', () => { if (document.activeElement === inp) open(); });
+  inp.addEventListener('blur', () => {
+    if (!inp.value && inp.dataset.prev) inp.value = inp.dataset.prev;   // nothing picked → restore
+    delete inp.dataset.prev;
+    inp.placeholder = ph;
+  });
+});
+
+// style images
+function pickImage(side){ document.getElementById('img'+(side==='front'?'Front':side==='back'?'Back':'Large')).click(); }
+function setImage(side, file){ if(!file) return; const r = new FileReader(); r.onload = e => { STYLES[cur].images[side] = e.target.result; render(); }; r.readAsDataURL(file); }
+function removeImage(side){ STYLES[cur].images[side] = null; render(); }
+// drag & drop on slots
+['large'].forEach(side => {
+  const cap = side==='front'?'Front':side==='back'?'Back':'Large';
+  const slot = document.getElementById('slot' + cap);
+  if (!slot) return;
+  slot.addEventListener('dragover', e => { e.preventDefault(); slot.style.borderColor = 'var(--gold)'; });
+  slot.addEventListener('dragleave', () => slot.style.borderColor = '');
+  slot.addEventListener('drop', e => { e.preventDefault(); slot.style.borderColor=''; const f = e.dataTransfer.files[0]; if (f) setImage(side, f); });
+});
+
+// ---- browser-side parser (mirror of extract_data.js) ----
+function numB(v){const n=parseFloat(v);return isFinite(n)?n:0}
+function strB(v){return v===undefined||v===null?'':String(v).trim()}
+function parseSheetB(ws){
+  const rows = XLSX.utils.sheet_to_json(ws,{header:1,defval:''});
+  const rec={styleNo:'',season:'',customer:'',fabMill:'',fabricRef:'',fabricDesc:'',fabWidth:'',orderNo:'',mover:'',qty:0,smv:0,epm:0.1,transportPct:0,marginPct:0,commissionPct:0,efficiency:60,lineCostRate:0,targetFob:0,amendNo:'',year:'',addProcess:'',embellishment:'',items:[]};
+  const labelMap={'Fab Mill:':'fabMill','Fabric Ref:':'fabricRef','Fabric Description:':'fabricDesc','Fab Width:':'fabWidth','Style NO:':'styleNo','Order No: ':'orderNo','Order No:':'orderNo'};
+  rows.forEach((r,i)=>r.forEach((cell,j)=>{
+    const t=strB(cell);
+    if(labelMap[t]!==undefined){for(let k=j+1;k<Math.min(j+4,r.length);k++)if(r[k]!==''){rec[labelMap[t]]=r[k];break}}
+    if(t==='Qty'){for(let k=j+1;k<Math.min(j+3,r.length);k++)if(r[k]!==''){rec.qty=numB(r[k]);break}}
+    if(t==='Transport'){for(let k=j+1;k<Math.min(j+3,r.length);k++)if(typeof r[k]==='number'){rec.transportPct=numB(r[k]);break}}
+    if(t==='Margin Slippage'){for(let k=j+1;k<Math.min(j+3,r.length);k++)if(typeof r[k]==='number'){rec.marginPct=numB(r[k]);break}}
+    if(t==='Commision'||t==='Commission'){for(let k=j+1;k<Math.min(j+3,r.length);k++)if(typeof r[k]==='number'){rec.commissionPct=numB(r[k]);break}}
+    if(t==='Efficiency'){for(let k=j+1;k<Math.min(j+3,r.length);k++)if(typeof r[k]==='number'){rec.efficiency=numB(r[k]);break}}
+    if(t==='Line cost'||t==='Line Cost rate'){for(let k=j+1;k<Math.min(j+3,r.length);k++)if(typeof r[k]==='number'){rec.lineCostRate=0;break}}
+    if(t==='SMV'){const below=rows[i+1];if(below)for(let k=j;k<below.length;k++)if(typeof below[k]==='number'&&below[k]>0){rec.smv=numB(below[k]);break}}
+    if(t==='EPM'){const below=rows[i+1];if(below)for(let k=j;k<below.length;k++)if(typeof below[k]==='number'&&below[k]>0&&below[k]<=10){rec.epm=numB(below[k]);break}}
+  }));
+  const findL=(l)=>rows.findIndex(r=>strB(r[1])===l);
+  const headerR=findL('Item'), subTotR=findL('SUB TOTAL');
+  const stopR=subTotR>0?subTotR:rows.length;
+  let section='Fabric';
+  for(let i=headerR+1;i<stopR;i++){
+    const r=rows[i],name=strB(r[1]);
+    if(name==='TTL fabric Cost'){section='Trims';continue}
+    if(name==='TTL Trims Cost'){section='Others';continue}
+    if(!name)continue;
+    if(['CM','SUB TOTAL','Transport','Margin Slippage'].includes(name))continue;
+    rec.items.push({name,ref:strB(r[2]),size:strB(r[3]),unit:strB(r[4]),unitPx:numB(r[5]),rating:numB(r[6]),waste:numB(r[7]),section});
+  }
+  return rec;
+}
+
+// ---- Benetione W23 BOM format parser ----
+function isBenetioneSheet(ws){
+  const rows = XLSX.utils.sheet_to_json(ws,{header:1,defval:''});
+  for(let i=0;i<Math.min(40,rows.length);i++){
+    for(let j=0;j<rows[i].length;j++){
+      const t=String(rows[i][j]);
+      if(t.includes('Bills of Materials') || t.trim()==='Fabrics Description' || t.trim()==='S/L No') return true;
+    }
+  }
+  return false;
+}
+function parseSheetBenetione(ws){
+  const rows = XLSX.utils.sheet_to_json(ws,{header:1,defval:''});
+  const rec={styleNo:'',season:'',customer:'',fabMill:'',fabricRef:'',fabricDesc:'',fabWidth:'',orderNo:'',mover:'',qty:0,smv:0,epm:0.1,transportPct:0,marginPct:0,commissionPct:0,efficiency:60,lineCostRate:0,targetFob:0,amendNo:'',year:'',addProcess:'',embellishment:'',items:[]};
+  const S=v=>v===undefined||v===null?'':String(v).trim();
+  const N=v=>{const n=parseFloat(v);return isFinite(n)?n:0};
+  const findLabel=(label)=>{for(let r=0;r<rows.length;r++)for(let c=0;c<rows[r].length;c++)if(S(rows[r][c])===label)return{r,c};return null;};
+  const rightVal=(loc)=>{for(let c=loc.c+1;c<Math.min(loc.c+5,rows[loc.r].length);c++){const v=rows[loc.r][c];if(v!==''&&v!==undefined)return v;}return '';};
+  let l;
+  if(l=findLabel('Style no'))rec.styleNo=S(rightVal(l)).replace(/\s+/g,' ').trim();
+  if(l=findLabel('Buyer'))rec.customer=S(rightVal(l));
+  if(l=findLabel('Order No'))rec.orderNo=S(rightVal(l));
+  if(l=findLabel('Bulk Order QTY'))rec.qty=N(rightVal(l));
+  if(l=findLabel('Commission'))rec.commissionPct=N(rightVal(l));
+  if(l=findLabel('Profit Margin %'))rec.marginPct=N(rightVal(l));
+  if(l=findLabel('SMV/ Pc'))rec.smv=N(rightVal(l));
+  if(l=findLabel('CPM with 100% Eff'))rec.epm=N(rightVal(l))||rec.epm;
+  if(l=findLabel('Product Eff%'))rec.efficiency=N(rightVal(l))*100;
+  if(l=findLabel('BDT to USD Rate')){/* informational */}
+  // composition line (first long fabric desc near col 16, row 1)
+  if(rows[1] && S(rows[1][16])) rec.fabricDesc=S(rows[1][16]);
+
+  // ---- item tables ----
+  let section='';
+  const secMap={'Fabrics Description':'Fabric','Accessories':'Trims','Item Name':'Packing','Testing':'Others'};
+  for(let i=0;i<rows.length;i++){
+    const r=rows[i], name=S(r[1]);
+    if(name==='Total Cost / DZ'){ section=''; continue; }
+    // header rows have the section title in col 1 and "Total Cost" label (string) in col 10
+    if(secMap[name]!==undefined && typeof r[10]!=='number'){ section=secMap[name]; continue; }
+    if(!section) continue;
+    if(!name) continue;
+    if(name==='S/L No') continue;
+    let sec;
+    if(section==='Fabric') sec='Fabric';
+    else if(section==='Packing') sec='Packing Trims';
+    else if(section==='Others') sec='Others';
+    else {
+      if(/wash|embroid|print|screen|aop|crocking|pilling|shrink/i.test(name)) sec='Embellishments';
+      else sec='Sewing Trims';
+    }
+    const required=N(r[3]), excess=N(r[4]);
+    let consumptionDz=N(r[5]);
+    const price=N(r[7]);
+    const totalCost=N(r[10]);
+    let rating;
+    if(required>0) rating = required/12;
+    else if(price>0 && totalCost>0) rating=(totalCost/price)/12;
+    else if(consumptionDz>0) rating=consumptionDz/12/(1+excess);
+    else rating = price>0?1:0;
+    const unitPx = price>0?price:(rating>0?totalCost/12/rating:totalCost/12);
+    rec.items.push({name,ref:S(r[9])||S(r[0]),size:'',unit:S(r[8]),unitPx,rating,waste:excess,section:sec});
+  }
+  return rec;
+}
+
+document.addEventListener('paste', e => {
+  const items = (e.clipboardData || window.clipboardData).items;
+  for (let it of items) {
+    if (it.type.indexOf('image/') === 0) {
+      const f = it.getAsFile();
+      if (f) setImage('large', f);
+      e.preventDefault();
+      break;
+    }
+  }
+});
+
+// import / export
+$('#btnImport').onclick = () => $('#xlsxFile').click();
+
+$('#xlsxFile').onchange = async e => {
+  const f = e.target.files[0]; if (!f) return;
+  const buf = await f.arrayBuffer();
+  const wb = XLSX.read(buf, {type:'array'});
+  const sheets = wb.SheetNames;
+  const benetione = sheets.some(n => isBenetioneSheet(wb.Sheets[n]));
+  let parsed;
+  if (benetione) {
+    parsed = sheets.map((n,i) => { const p = parseSheetBenetione(wb.Sheets[n]); if(!p.styleNo) p.styleNo = n.trim(); return p; }).filter(p => p.styleNo || p.items.length);
+  } else {
+    parsed = sheets.map(n => parseSheetB(wb.Sheets[n])).filter(p => p.styleNo || p.items.length);
+  }
+  if(!parsed.length){alert('No costing-style sheets found in this file.');return}
+  STYLES = parsed.map(p => ({...p, images:{front:null,back:null,large:null}}))
+    .map(p => ({...p, items: p.items.filter(it => !/ebmlishments/i.test(it.name || ''))}));
+  cur = 0; render();
+  alert('Loaded ' + STYLES.length + ' styles: ' + STYLES.map(s=>s.styleNo).join(', '));
+};
+// Build one organised cost-sheet worksheet for a style
+// Columns: A No | B Item | C Ref | D Unit | E Unit Px | F Rating | G Waste % | H Value $/pc | I Budget
+function buildStyleSheet(s){
+  const c = calc(s), qty = +s.qty || 0;
+  const M3 = '0.000', M2 = '#,##0.00', P2 = '0.00%', P0 = '0%', N0 = '#,##0';
+  const rows = [], merges = [], fmt = {};
+  const add = (cells = [], zs = {}) => { const r = rows.length; rows.push(cells); for (const k in zs) fmt[r + ',' + k] = zs[k]; return r; };
+  const merge = (r, c1, c2) => merges.push({s:{r, c:c1}, e:{r, c:c2}});
+  const blank = () => add([]);
+  const title = t => merge(add([t]), 0, 8);
+  const str = v => (v === undefined || v === null) ? '' : v;
+  const seasonYear = [s.season, s.year].map(v => String(str(v)).trim()).filter(Boolean).join(' ');
+
+  // ---- heading ----
+  merge(add(['COST SHEET' + (s.customer ? ' — ' + s.customer : '')]), 0, 8);
+  merge(add([['Style ' + s.styleNo, seasonYear, s.amendNo ? 'Amend ' + s.amendNo : ''].filter(Boolean).join('   |   ')]), 0, 8);
+  merge(add(['Exported: ' + new Date().toLocaleString()]), 0, 8);
+  blank();
+
+  // ---- style description (3 label/value pairs per row) ----
+  title('STYLE DESCRIPTION');
+  const desc = [
+    ['Style No', s.styleNo], ['Customer', s.customer], ['Season', seasonYear],
+    ['Order No', s.orderNo], ['Amend No', s.amendNo], ['MOQ/Projected Qty', qty, N0],
+    ['Fab Mill', s.fabMill], ['Fab Width', s.fabWidth], ['Fabric Ref', s.fabricRef],
+    ['Wash Type', s.addProcess], ['Embellishments', s.embellishment], ['Target $/pc', +s.targetFob || 0, M2],
+  ];
+  for (let i = 0; i < desc.length; i += 3) {
+    const cells = [], zs = {};
+    desc.slice(i, i + 3).forEach(([l, v, z], k) => { cells[k*3] = l + ':'; cells[k*3+1] = str(v); if (z) zs[k*3+1] = z; });
+    const r = add(cells, zs); merge(r, 1, 2); merge(r, 4, 5); merge(r, 7, 8);
+  }
+  merge(add(['Fabric Description:', str(s.fabricDesc)]), 1, 8);
+  blank();
+
+  // ---- production variables ----
+  title('PRODUCTION VARIABLES');
+  let r = add(['SMV (min):', +s.smv || 0, '', 'EPM:', +s.epm || 0, '', 'Efficiency %:', (+s.efficiency || 0) / 100], {1:'0.00', 4:'0.000', 7:P0});
+  merge(r, 1, 2); merge(r, 4, 5); merge(r, 7, 8);
+  r = add(['CPM ($):', +s.lineCostRate || 0, '', 'SAH:', (+s.smv || 0) * qty / 60], {1:M3, 4:'#,##0.0'});
+  merge(r, 1, 2); merge(r, 4, 5);
+  blank();
+
+  // ---- BOM ----
+  title('BOM — MATERIALS & TRIMS');
+  add(['No', 'Item', 'Ref', 'Unit', 'Unit Px', 'Rating', 'Waste %', 'Value $/pc', 'Budget (' + qty.toLocaleString() + ' pcs)']);
+  let no = 0;
+  ['Fabric','Sewing Trims','Packing Trims','Embellishments','Others'].forEach(sec => {
+    const items = s.items.filter(it => sectionOf(it) === sec);
+    if (!items.length) return;
+    merge(add([sec.toUpperCase()]), 0, 8);
+    items.forEach(it => {
+      const val = (+it.unitPx || 0) * (+it.rating || 0) * (1 + (+it.waste || 0));
+      add([++no, it.name, it.ref, it.unit, +it.unitPx || 0, +it.rating || 0, +it.waste || 0, val, val * qty],
+          {4:M3, 5:'0.000', 6:P0, 7:M3, 8:M2});
+    });
+    r = add(['', 'Total ' + sec, '', '', '', '', '', c.mat[sec], c.mat[sec] * qty], {7:M3, 8:M2});
+    merge(r, 1, 6);
+  });
+  r = add(['', 'MATERIALS TOTAL', '', '', '', '', '', c.matTotal, c.matTotal * qty], {7:M3, 8:M2});
+  merge(r, 1, 6);
+  blank();
+
+  // ---- finance costs ----
+  const on = s.othersNames || {};
+  title('FINANCE COSTS');
+  r = add(['', 'Related costs', '', '', '', 'Percentage', '', '$ / pc', 'Budget (' + qty.toLocaleString() + ' pcs)']); merge(r, 1, 4); merge(r, 5, 6);
+  [[on.transport || 'Transport', s.transportPct, c.transport],
+   [on.margin || 'Margin Slippage', s.marginPct, c.margin],
+   [on.commission || 'Commission', s.commissionPct, c.commission]].forEach(([n, p, v]) => {
+    r = add(['', n, '', '', '', +p || 0, '', v, v * qty], {5:P2, 7:M3, 8:M2}); merge(r, 1, 4); merge(r, 5, 6);
+  });
+  blank();
+
+  // ---- cost summary ----
+  title('COST SUMMARY');
+  r = add(['', 'Component', '', '', '', '% of FOB', '', '$ / pc', 'Budget (' + qty.toLocaleString() + ' pcs)']); merge(r, 1, 4); merge(r, 5, 6);
+  const pctOf = v => c.fob ? v / c.fob : 0;
+  [['Fabric', c.mat.Fabric], ['Sewing Trims', c.mat['Sewing Trims']], ['Packing Trims', c.mat['Packing Trims']],
+   ['Embellishments (Wash/Embr/Print)', c.mat.Embellishments], ['Others (Courier/Freight & Tests)', c.mat.Others],
+   ['Materials Total', c.matTotal], ['CM (SMV × EPM)', c.cm], ['FOB without Commission', c.fobw],
+   ['Transport', c.transport], ['Margin Slippage', c.margin], ['Commission', c.commission],
+   ['FOB with Commission', c.fob], ['Line Cost', c.lineCost], ['Profit Margin', c.profit]].forEach(([n, v]) => {
+    r = add(['', n, '', '', '', pctOf(v), '', v, v * qty], {5:P2, 7:M3, 8:M2}); merge(r, 1, 4); merge(r, 5, 6);
+  });
+  blank();
+
+  // ---- key results ----
+  title('KEY RESULTS');
+  r = add(['CM:', c.cm, '', 'Line Cost:', c.lineCost, '', 'Profit %:', pctOf(c.profit)], {1:M3, 4:M3, 7:P2});
+  merge(r, 1, 2); merge(r, 4, 5); merge(r, 7, 8);
+  r = add(['FOB (without Comm.):', c.fobw, '', 'FOB (with Comm.):', c.fob, '', 'Target $/pc:', +s.targetFob || 0], {1:M2, 4:M2, 7:M2});
+  merge(r, 1, 2); merge(r, 4, 5); merge(r, 7, 8);
+
+  const ws = XLSX.utils.aoa_to_sheet(rows);
+  for (const k in fmt) {
+    const [rr, cc] = k.split(',').map(Number);
+    const cell = ws[XLSX.utils.encode_cell({r: rr, c: cc})];
+    if (cell && cell.t === 'n') cell.z = fmt[k];
+  }
+  ws['!merges'] = merges;
+  ws['!cols'] = [{wch:20},{wch:44},{wch:16},{wch:18},{wch:12},{wch:12},{wch:20},{wch:13},{wch:20}];
+  return ws;
+}
+const sheetName = (s, i) => (String(s.styleNo || '').replace(/[\[\]:*?\/\\]/g, '-').trim() || ('Style' + (i + 1))).slice(0, 31);
+const fileSafe = t => String(t || '').replace(/[\\\/:*?"<>|]+/g, '-').trim();
+
+// Export only the current style → "<Style No>.xlsx"
+function exportCurrentStyle(){
+  const s = STYLES[cur]; if (!s) return;
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, buildStyleSheet(s), sheetName(s, cur));
+  const name = fileSafe(s.styleNo) || 'cost-sheet';
+  XLSX.writeFile(wb, name + (s.amendNo ? ' - Amend ' + fileSafe(s.amendNo) : '') + '.xlsx');
+  const pm = document.getElementById('printMenu'); if (pm) pm.classList.remove('open');
+}
+$('#btnExportStyle').onclick = exportCurrentStyle;
+
+// Export all styles (one organised sheet per style)
+$('#btnExport').onclick = () => {
+  const wb = XLSX.utils.book_new(), used = {};
+  STYLES.forEach((s, idx) => {
+    let n = sheetName(s, idx), base = n, k = 2;
+    while (used[n.toLowerCase()]) n = (base.slice(0, 27) + ' (' + (k++) + ')');
+    used[n.toLowerCase()] = 1;
+    XLSX.utils.book_append_sheet(wb, buildStyleSheet(s), n);
+  });
+  XLSX.writeFile(wb, 'Costing.xlsx');
+};
+
+// ---- auto-save so refresh never loses data ----
+let _saveT = null;
+function saveState(){
+  const payload = JSON.stringify({styles: STYLES});
+  try { localStorage.setItem('giii_costing_state', payload); } catch(e){}
+  fetch('/api/state', {method:'POST', headers:{'Content-Type':'application/json'}, body: payload}).catch(()=>{});
+}
+function debouncedSave(){ clearTimeout(_saveT); _saveT = setTimeout(saveState, 600); }
+
+render();
+(async () => {
+  let restored = null;
+  try {
+    const r = await fetch('/api/state');
+    if (r.ok) restored = await r.json();
+  } catch(e){}
+  if (!restored || !Array.isArray(restored.styles) || !restored.styles.length) {
+    try { restored = JSON.parse(localStorage.getItem('giii_costing_state') || 'null'); } catch(e){}
+  }
+  if (restored && Array.isArray(restored.styles) && restored.styles.length) {
+    STYLES = restored.styles.map(s => ({...s, images: s.images || {front:null, back:null, large:null}}));
+    cur = 0; render();
+  }
+  _stateReady = true;
+})();
+</script>
+</body>
+</html>
