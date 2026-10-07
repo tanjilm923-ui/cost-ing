@@ -32,6 +32,26 @@
 .custSel:focus{box-shadow:0 0 0 3px rgba(59,130,246,.35)}
 .custSel option{background:#16294a;color:#fff}
 .noStyles{font-size:12px;color:#94a3b8;padding:8px 10px;border:1px dashed rgba(255,255,255,.2);border-radius:10px;text-align:center}
+.authTools{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:6px}
+.side .authTools button{margin:0;padding:6px 4px;text-align:center;font-size:11.5px;font-weight:700}
+.side .authTools button:hover{transform:none;background:rgba(255,255,255,.22)}
+.lockPanel{display:none;min-height:80vh;align-items:center;justify-content:center}
+main.locked > *:not(#lockPanel){display:none!important}
+main.locked > #lockPanel{display:flex}
+.lockBox{background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:28px 30px;width:380px;max-width:100%;text-align:center}
+.lockBox h2{margin:6px 0 6px;font-size:19px;color:#1e293b}
+.lockBox input,.pwModal input{width:100%;border:1px solid var(--line);border-radius:9px;padding:10px 12px;font-size:14px;background:#f8fafc;margin-bottom:8px}
+.lockBox input:focus,.pwModal input:focus{border-color:#3b82f6;box-shadow:0 0 0 3px rgba(59,130,246,.2);outline:none}
+.lockErr{color:#e03131;font-size:12px;font-weight:600;min-height:16px;margin-bottom:6px}
+.pwBack{position:fixed;inset:0;background:rgba(15,23,42,.55);z-index:300;display:flex;align-items:center;justify-content:center;padding:16px}
+.pwModal{background:#fff;border-radius:16px;box-shadow:0 20px 50px rgba(0,0,0,.3);padding:22px 24px;width:460px;max-width:100%;max-height:90vh;overflow:auto}
+.pwModal h3{margin:0 0 6px;font-size:17px;color:#1e293b}
+.pwModal p{margin:0 0 12px;color:var(--muted);font-size:12.5px}
+.pwRow{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid #f1f5f9;font-size:13px}
+.pwRow .nm{flex:1;font-weight:600}
+.pwRow .st{font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px}
+.pwRow .st.on{background:#fff5f5;color:#e03131}.pwRow .st.off{background:#f1f5f9;color:#64748b}
+.pwRow .btn{padding:4px 9px;font-size:11.5px;box-shadow:none}
 .styleTools{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin:0 0 10px}
 .side .styleTools button{width:auto;margin:0;padding:6px 4px;display:flex;align-items:center;justify-content:center;gap:4px;font-size:11.5px;font-weight:700;color:#fff;border-radius:8px;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,.25)}
 .side .styleTools button .ic{font-size:13px;line-height:1}
@@ -141,6 +161,10 @@ tr.total td{font-weight:700;border-top:2px solid #cbd5e1;background:#f8fafc;colo
     <div class="brand"><div class="logo" id="brandLogo">Buyer</div><div><b id="brandTitle">COST SHEET</b><span id="brandSub" style="font-size:13px;font-weight:700;color:#94a3b8;letter-spacing:.04em"></span></div></div>
     <h4>Customer</h4>
     <select id="custView" class="custSel" title="Open a customer's styles"></select>
+    <div class="authTools">
+      <button id="btnPasswords" title="Admin: set customer passwords">🔐 Passwords</button>
+      <button id="btnLockNow" title="Lock all protected customers now">🔒 Lock now</button>
+    </div>
     <h4>Styles</h4>
     <div class="styleTools">
       <button id="btnAddStyle" class="add" title="Add new style"><span class="ic">＋</span>New</button>
@@ -169,6 +193,19 @@ tr.total td{font-weight:700;border-top:2px solid #cbd5e1;background:#f8fafc;colo
     <a href="https://wa.me/8801330503907?text=Hi%2C%20I%20need%20help%20with%20the%20Costing%20website." target="_blank" rel="noopener" title="Chat on WhatsApp: +880 1330-503907" style="display:flex;align-items:center;gap:8px;background:#25d366;border:1px solid #5ee38f;color:#fff;text-decoration:none;padding:6px 8px;border-radius:10px;font-size:12.5px;font-weight:700;margin-top:14px;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.25)"><svg viewBox="0 0 24 24" width="16" height="16" fill="#fff" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91C21.95 6.45 17.5 2 12.04 2zm0 18.15c-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.25-8.24 4.54 0 8.24 3.7 8.24 8.24 0 4.55-3.7 8.24-8.24 8.24zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.12-.17.25-.64.81-.78.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.13-.15.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.22.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.14-1.18-.06-.1-.22-.16-.47-.28z"/></svg>Connect to fix the problems</a>
   </aside>
   <main>
+    <div id="lockPanel" class="lockPanel">
+      <div class="lockBox">
+        <div style="font-size:42px">🔒</div>
+        <h2 id="lockTitle">Protected</h2>
+        <p style="color:var(--muted);margin:0 0 14px">This customer's costing is password protected.<br>Enter the customer password or the admin password.</p>
+        <form id="lockForm" autocomplete="off">
+          <input type="password" id="lockPw" placeholder="Password" autocomplete="new-password">
+          <div id="lockErr" class="lockErr"></div>
+          <button type="submit" class="btn gold" style="width:100%">🔓 Unlock</button>
+        </form>
+        <button class="btn" id="lockBack" style="width:100%;margin-top:8px">← Back to All customers</button>
+      </div>
+    </div>
     <div class="topbar">
       <div class="topMain">
         <div class="titleRow"><h1 id="title">—</h1><div class="chips" id="titleChips"></div></div>
@@ -297,6 +334,7 @@ document.getElementById('tpReplace').checked = localStorage.getItem('tpReplace')
 
 async function importTechPack(file){
   if(!file) return;
+  if (lockedNow()) return;
   try{
     const buf = await file.arrayBuffer();
     const pdf = await pdfjsLib.getDocument({data:new Uint8Array(buf)}).promise;
@@ -548,6 +586,166 @@ function calc(s){
   return {mat, matTotal, cm, base, fobw, transport, margin, commission, fob, lineCost, profit};
 }
 
+// ---- customer passwords (password screen; admin manages passwords) ----
+// Stored in localStorage as salted SHA-256 hashes — never the plain password.
+const AUTH_KEY = 'giii_costing_auth', IDLE_LOCK_MS = 15 * 60 * 1000;
+let AUTH = (() => { try { return JSON.parse(localStorage.getItem(AUTH_KEY) || 'null'); } catch(e){ return null; } })()
+  || {salt: '', admin: '', cust: {}};
+if (!AUTH.cust) AUTH.cust = {};
+if (!AUTH.salt) { AUTH.salt = Array.from(crypto.getRandomValues(new Uint8Array(16)), b => b.toString(16).padStart(2, '0')).join(''); }
+const saveAuth = () => localStorage.setItem(AUTH_KEY, JSON.stringify(AUTH));
+const custKey = n => String(n || '').trim().toUpperCase();
+let adminUnlocked = false;
+const unlockedCust = new Set();
+let lastActivity = Date.now();
+
+async function hashPw(pw){
+  const txt = AUTH.salt + ':' + pw;
+  if (window.crypto && crypto.subtle) {
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(txt));
+    return Array.from(new Uint8Array(buf), b => b.toString(16).padStart(2, '0')).join('');
+  }
+  // fallback (older browsers without crypto.subtle)
+  let h1 = 0xdeadbeef, h2 = 0x41c6ce57;
+  for (let i = 0; i < txt.length; i++) { const ch = txt.charCodeAt(i); h1 = Math.imul(h1 ^ ch, 2654435761); h2 = Math.imul(h2 ^ ch, 1597334677); }
+  h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+  h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+  return 'f' + (h2 >>> 0).toString(16) + (h1 >>> 0).toString(16);
+}
+const isProtected = name => !!AUTH.cust[custKey(name)];
+const isLockedCust = name => !!custKey(name) && isProtected(name) && !adminUnlocked && !unlockedCust.has(custKey(name));
+const canSee = s => !isLockedCust(custOf(s));
+const anyUnlocked = () => adminUnlocked || unlockedCust.size > 0;
+
+// try a password for a customer: customer password or admin password
+async function tryUnlock(name, pw){
+  if (!pw) return false;
+  const h = await hashPw(pw);
+  if (AUTH.admin && h === AUTH.admin) { adminUnlocked = true; lastActivity = Date.now(); return true; }
+  if (AUTH.cust[custKey(name)] && h === AUTH.cust[custKey(name)]) { unlockedCust.add(custKey(name)); lastActivity = Date.now(); return true; }
+  return false;
+}
+function lockAll(silent){
+  const was = anyUnlocked();
+  adminUnlocked = false; unlockedCust.clear();
+  if (!STYLES[cur] || !canSee(STYLES[cur])) {
+    const i = STYLES.findIndex(s => inView(s) && canSee(s));
+    if (i >= 0) cur = i;
+  }
+  render();
+  if (was && !silent) alert('🔒 Protected customers are locked again.');
+}
+['mousemove', 'keydown', 'click', 'scroll', 'touchstart'].forEach(ev => document.addEventListener(ev, () => { lastActivity = Date.now(); }, {passive: true}));
+setInterval(() => { if (anyUnlocked() && Date.now() - lastActivity > IDLE_LOCK_MS) { lockAll(true); alert('🔒 Locked after 15 minutes of no activity.'); } }, 30000);
+
+// small modal helper
+function openModal(html){
+  const back = document.createElement('div'); back.className = 'pwBack';
+  back.innerHTML = `<div class="pwModal">${html}</div>`;
+  back.addEventListener('mousedown', e => { if (e.target === back) back.remove(); });
+  document.body.appendChild(back);
+  return back;
+}
+// ask for a password in a masked field → Promise<string|null>
+function askPassword(title, msg, confirmTwice){
+  return new Promise(resolve => {
+    const m = openModal(`<h3>${title}</h3><p>${msg || ''}</p>
+      <form autocomplete="off"><input type="password" class="p1" placeholder="Password" autocomplete="new-password">
+      ${confirmTwice ? '<input type="password" class="p2" placeholder="Repeat password" autocomplete="new-password">' : ''}
+      <div class="lockErr"></div>
+      <div style="display:flex;gap:8px;justify-content:flex-end"><button type="button" class="btn cancel">Cancel</button><button type="submit" class="btn gold">OK</button></div></form>`);
+    const f = m.querySelector('form'), p1 = m.querySelector('.p1'), p2 = m.querySelector('.p2'), err = m.querySelector('.lockErr');
+    setTimeout(() => p1.focus(), 30);
+    const done = v => { m.remove(); resolve(v); };
+    m.querySelector('.cancel').onclick = () => done(null);
+    f.onsubmit = e => {
+      e.preventDefault();
+      if (!p1.value) { err.textContent = 'Please enter a password.'; return; }
+      if (confirmTwice && p1.value.length < 4) { err.textContent = 'Use at least 4 characters.'; return; }
+      if (confirmTwice && p1.value !== p2.value) { err.textContent = 'Passwords do not match.'; return; }
+      done(p1.value);
+    };
+  });
+}
+
+// lock screen in the main area
+function showLockPanel(name){
+  const main = document.querySelector('main');
+  main.classList.add('locked');
+  // wipe the previously shown costing from the page so it isn't left behind the lock screen
+  ['#kpis', '#bom tbody', '#summary tbody', '#otherPct tbody', '#titleChips'].forEach(q => { const el = $(q); if (el) el.innerHTML = ''; });
+  ['#title', '#subtitle', '#bottomCM', '#bottomFobwo', '#bottomFob', '#bottomLineCost', '#bottomProfit'].forEach(q => { const el = $(q); if (el) el.textContent = ''; });
+  document.querySelectorAll('[data-h]').forEach(inp => inp.value = '');
+  const sl = $('#slotLarge img'); if (sl) sl.remove();
+  $('#lockTitle').textContent = name + ' is protected';
+  $('#lockPw').value = ''; $('#lockErr').textContent = '';
+  main.dataset.lockFor = name;
+  setTimeout(() => $('#lockPw').focus(), 30);
+}
+function hideLockPanel(){ document.querySelector('main').classList.remove('locked'); }
+$('#lockForm').onsubmit = async e => {
+  e.preventDefault();
+  const name = document.querySelector('main').dataset.lockFor || '';
+  if (await tryUnlock(name, $('#lockPw').value)) {
+    const i = STYLES.findIndex(s => inView(s) && canSee(s));
+    if (i >= 0) { cur = i; render(); return; }
+    hideLockPanel();                                   // unlocked but this customer has no styles yet
+    if (!(confirm(`No styles for ${viewLabel()} yet.\n\nCreate a new style for ${viewLabel()}?`) && addStyle())) { setCustView(''); render(); }
+  }
+  else { $('#lockErr').textContent = 'Wrong password.'; $('#lockPw').select(); }
+};
+$('#lockBack').onclick = () => {
+  setCustView('');
+  const i = STYLES.findIndex(canSee); if (i >= 0) cur = i;
+  render();
+};
+$('#btnLockNow').onclick = () => lockAll(false);
+
+// admin: password manager
+async function openPasswordManager(){
+  if (!AUTH.admin) {
+    const pw = await askPassword('Create admin password', 'This master password lets you set customer passwords and open every customer. Keep it safe — it cannot be recovered.', true);
+    if (!pw) return;
+    AUTH.admin = await hashPw(pw); saveAuth(); adminUnlocked = true; lastActivity = Date.now();
+  } else if (!adminUnlocked) {
+    const pw = await askPassword('Admin password', 'Enter the admin password to manage customer passwords.');
+    if (!pw) return;
+    if ((await hashPw(pw)) !== AUTH.admin) { alert('Wrong admin password.'); return; }
+    adminUnlocked = true; lastActivity = Date.now();
+  }
+  render();
+  const names = customerNames();
+  const esc = t => String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;');
+  const m = openModal(`<h3>🔐 Customer passwords</h3>
+    <p>Protected customers need their password (or the admin password) to be opened. Locks again after 15 min of no activity.</p>
+    <div class="pwList">${names.map((n, i) => `<div class="pwRow"><span class="nm">${esc(n)}</span>
+      <span class="st ${isProtected(n) ? 'on' : 'off'}">${isProtected(n) ? '🔒 Protected' : 'Open'}</span>
+      <button class="btn" data-set="${i}">${isProtected(n) ? 'Change' : 'Set'}</button>
+      ${isProtected(n) ? `<button class="btn" data-del="${i}">Remove</button>` : ''}</div>`).join('')}</div>
+    <div style="display:flex;gap:8px;justify-content:space-between;margin-top:14px;flex-wrap:wrap">
+      <button class="btn" data-admin>Change admin password</button>
+      <button class="btn gold" data-close>Done</button>
+    </div>`);
+  m.querySelector('[data-close]').onclick = () => m.remove();
+  m.querySelectorAll('[data-set]').forEach(b => b.onclick = async () => {
+    const n = names[+b.dataset.set];
+    const pw = await askPassword('Password for ' + esc(n), 'Anyone opening ' + esc(n) + ' costing will need this password.', true);
+    if (!pw) return;
+    AUTH.cust[custKey(n)] = await hashPw(pw); saveAuth(); m.remove(); openPasswordManager();
+  });
+  m.querySelectorAll('[data-del]').forEach(b => b.onclick = () => {
+    const n = names[+b.dataset.del];
+    if (!confirm('Remove the password from ' + n + '? Anyone will be able to open it.')) return;
+    delete AUTH.cust[custKey(n)]; saveAuth(); m.remove(); openPasswordManager();
+  });
+  m.querySelector('[data-admin]').onclick = async () => {
+    const pw = await askPassword('New admin password', 'Enter the new admin password.', true);
+    if (!pw) return;
+    AUTH.admin = await hashPw(pw); saveAuth(); alert('Admin password changed.');
+  };
+}
+$('#btnPasswords').onclick = openPasswordManager;
+
 // ---- customer-wise interface ----
 // custView: '' = all customers, '__none__' = styles without a customer, otherwise the customer name
 let custView = localStorage.getItem('custView') || '';
@@ -560,45 +758,56 @@ function inView(s){
 }
 const viewLabel = () => !custView ? 'All customers' : custView === '__none__' ? 'No customer' : custView;
 function setCustView(v){ custView = v; localStorage.setItem('custView', v); }
-function renderCustView(){
-  const sel = $('#custView'); if (!sel) return;
+function customerNames(){
   const names = [];
   const addName = n => { n = String(n || '').trim(); if (n && !names.some(x => sameCust(x, n))) names.push(n); };
   document.querySelectorAll('#customerList option').forEach(o => addName(o.value));
   STYLES.forEach(s => addName(custOf(s)));
   if (custView && custView !== '__none__') addName(custView);
+  return names;
+}
+function renderCustView(){
+  const sel = $('#custView'); if (!sel) return;
+  const names = customerNames();
   const count = fn => STYLES.filter(fn).length;
   const none = count(s => !custOf(s));
   const esc = t => String(t).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
   const isSel = v => v === custView || (v && custView && v !== '__none__' && custView !== '__none__' && sameCust(v, custView));
+  const icon = n => !isProtected(n) ? '' : isLockedCust(n) ? '🔒 ' : '🔓 ';
   const opt = (v, label, n) => `<option value="${esc(v)}"${isSel(v) ? ' selected' : ''}>${esc(label)}${n ? ' (' + n + ')' : ''}</option>`;
-  sel.innerHTML = opt('', 'All customers', STYLES.length)
-    + names.map(n => opt(n, n, count(s => sameCust(custOf(s), n)))).join('')
+  sel.innerHTML = opt('', 'All customers', count(canSee))
+    + names.map(n => opt(n, icon(n) + n, isLockedCust(n) ? 0 : count(s => sameCust(custOf(s), n)))).join('')
     + (none ? opt('__none__', 'No customer', none) : '');
+  const lb = $('#btnLockNow'); if (lb) lb.disabled = !anyUnlocked(), lb.style.opacity = anyUnlocked() ? '1' : '.45';
 }
 function renderList(){
   renderCustView();
   const be = $('#btnExport'); if (be) be.textContent = custView ? `⬇ Export ${viewLabel()} styles (Excel)` : '⬇ Export all styles (Excel)';
-  const rows = STYLES.map((s, i) => [s, i]).filter(([s]) => inView(s));
-  $('#styleList').innerHTML = rows.length ? rows.map(([s, i]) => `
+  const rows = STYLES.map((s, i) => [s, i]).filter(([s]) => inView(s) && canSee(s));
+  const hidden = STYLES.filter(s => inView(s) && !canSee(s)).length;
+  $('#styleList').innerHTML = (rows.length ? rows.map(([s, i]) => `
     <div class="styleItem ${i===cur?'active':''}" onclick="select(${i})">
       ${s.images.large || s.images.front ? `<img src="${s.images.large || s.images.front}">` : `<span class="noimg"></span>`}
       <div>${s.styleNo}${s.amendNo ? ' · A' + s.amendNo : ''}</div>
     </div>`).join('')
-    : `<div class="noStyles">No styles for ${viewLabel()} yet.<br>Click <b>＋ New</b> to add one.</div>`;
+    : (hidden ? '' : `<div class="noStyles">No styles for ${viewLabel()} yet.<br>Click <b>＋ New</b> to add one.</div>`))
+    + (hidden ? `<div class="noStyles" style="margin-top:4px">🔒 ${hidden} style(s) in protected customers</div>` : '');
 }
 function select(i){ cur = i; render(); }
 
 $('#custView').onchange = e => {
   const prev = custView;
   setCustView(e.target.value);
-  const i = STYLES.findIndex(inView);
+  let i = STYLES.findIndex(s => inView(s) && canSee(s));
+  if (i < 0) i = STYLES.findIndex(inView);          // only protected styles → lock screen
   if (i >= 0) { cur = i; render(); return; }
+  if (custView && custView !== '__none__' && isLockedCust(custView)) { renderList(); showLockPanel(custView); return; }
   // this customer has no styles yet → offer to create the first one
   if (!(confirm(`No styles for ${viewLabel()} yet.\n\nCreate a new style for ${viewLabel()}?`) && addStyle())) { setCustView(prev); render(); }
 };
 
 function addStyle(){
+  if (custView && custView !== '__none__' && isLockedCust(custView)) { alert(custView + ' is locked. Unlock it first.'); return false; }
   const forCust = (custView && custView !== '__none__') ? custView : '';
   const no = prompt('Enter new Style No' + (forCust ? ' for ' + forCust : '') + ':', 'NEW-STYLE');
   if (!no) return false;
@@ -607,7 +816,9 @@ function addStyle(){
   return true;
 }
 $('#btnAddStyle').onclick = addStyle;
+const lockedNow = () => { if (document.querySelector('main').classList.contains('locked') || !canSee(STYLES[cur])) { alert('This customer is locked. Unlock it first.'); return true; } return false; };
 $('#btnCopyStyle').onclick = () => {
+  if (lockedNow()) return;
   const src = STYLES[cur];
   const copy = JSON.parse(JSON.stringify(src, (k, v) => k === 'images' ? undefined : v));
   copy.styleNo = prompt('Style No for the copy:', src.styleNo + '-COPY') || (src.styleNo + '-COPY');
@@ -616,15 +827,23 @@ $('#btnCopyStyle').onclick = () => {
   cur = STYLES.length - 1; render();
 };
 $('#btnDelStyle').onclick = () => {
+  if (lockedNow()) return;
   if (STYLES.length <= 1) { alert('At least one style is required.'); return; }
   if (!confirm('Remove style "' + STYLES[cur].styleNo + '"?')) return;
   STYLES.splice(cur, 1);
-  let i = STYLES.findIndex(inView);                 // stay inside the current customer if possible
-  if (i < 0) { setCustView(''); i = 0; }            // customer now empty → show all customers
+  let i = STYLES.findIndex(s => inView(s) && canSee(s));   // stay inside the current customer if possible
+  if (i < 0) { setCustView(''); i = STYLES.findIndex(canSee); if (i < 0) i = 0; }   // customer now empty → all customers
   cur = Math.min(Math.max(i, 0), STYLES.length - 1); render();
 };
 
 function render(){
+  if (!canSee(STYLES[cur])) {                         // protected customer → show the lock screen, not the costing
+    if (custView && !inView(STYLES[cur])) setCustView(custOf(STYLES[cur]));
+    renderList(); showLockPanel(custOf(STYLES[cur]));
+    if (_stateReady) debouncedSave();
+    return;
+  }
+  hideLockPanel();
   const s = STYLES[cur], c = calc(s);
   document.title = 'Cost Sheet';
   $('#title').textContent = 'Style ' + s.styleNo + (s.amendNo ? ' · Amend ' + s.amendNo : '');
@@ -936,6 +1155,7 @@ $('#xlsxFile').onchange = async e => {
   const loaded = parsed.map(p => ({...p, images:{front:null,back:null,large:null}}))
     .map(p => ({...p, items: p.items.filter(it => !/ebmlishments/i.test(it.name || ''))}));
   const forCust = (custView && custView !== '__none__') ? custView : '';
+  if (forCust && isLockedCust(forCust)) { alert(forCust + ' is locked. Unlock it first.'); e.target.value = ''; return; }
   if (forCust) {
     // customer interface open → load into this customer only, other customers' styles are kept
     const old = STYLES.filter(inView).length;
@@ -944,7 +1164,9 @@ $('#xlsxFile').onchange = async e => {
     STYLES = STYLES.filter(s => !inView(s)).concat(loaded);
     cur = STYLES.length - loaded.length;
   } else {
-    STYLES = loaded; cur = 0;
+    // all customers: replace everything you can see; locked customers' styles are kept untouched
+    const keep = STYLES.filter(s => !canSee(s));
+    STYLES = keep.concat(loaded); cur = keep.length;
   }
   e.target.value = '';
   render();
@@ -1060,6 +1282,7 @@ const fileSafe = t => String(t || '').replace(/[\\\/:*?"<>|]+/g, '-').trim();
 // Export only the current style → "<Style No>.xlsx"
 function exportCurrentStyle(){
   const s = STYLES[cur]; if (!s) return;
+  if (!canSee(s)) { alert('This customer is locked. Unlock it first.'); return; }
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, buildStyleSheet(s), sheetName(s, cur));
   const name = fileSafe(s.styleNo) || 'cost-sheet';
@@ -1071,7 +1294,7 @@ $('#btnExportStyle').onclick = exportCurrentStyle;
 // Export all styles (one organised sheet per style)
 $('#btnExport').onclick = () => {
   const wb = XLSX.utils.book_new(), used = {};
-  const list = STYLES.filter(inView);
+  const list = STYLES.filter(s => inView(s) && canSee(s));   // protected customers are never exported while locked
   if (!list.length) { alert('No styles to export for ' + viewLabel() + '.'); return; }
   list.forEach((s, idx) => {
     let n = sheetName(s, idx), base = n, k = 2;
@@ -1127,7 +1350,12 @@ async function shrinkStoredImages(){
 }
 function debouncedSave(){ clearTimeout(_saveT); _saveT = setTimeout(saveState, 600); }
 
-function pickInView(){ const i = STYLES.findIndex(inView); if (i >= 0) cur = i; else { setCustView(''); cur = 0; } }
+function pickInView(){
+  // on page load protected customers are locked → open the first style that can be seen
+  let i = STYLES.findIndex(s => inView(s) && canSee(s));
+  if (i < 0) { setCustView(''); i = STYLES.findIndex(canSee); }
+  cur = i >= 0 ? i : 0;
+}
 pickInView();
 render();
 (async () => {
